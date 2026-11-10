@@ -10,9 +10,9 @@ CONST[0] = 5.0
 
 def make_blocks():
     return [
-        lambda y: y * 2.0,            # doubles the stream
-        lambda y: np.zeros(D),        # writes nothing
-        lambda y: CONST,             # constant contribution
+        lambda y: y * 2.0,
+        lambda y: np.zeros(D),
+        lambda y: CONST,
     ]
 
 
@@ -25,7 +25,6 @@ def test_run_stream():
     x = np.zeros(D)
     x[0] = 1.0
     out = run_stream(blocks, x)
-    # x + 2x + 0 + 5 = [8, 0, 0, 0]
     assert np.allclose(out, [8.0, 0.0, 0.0, 0.0])
 
 
@@ -36,7 +35,6 @@ def test_knockout_ranking():
     r = knockout_rank(blocks, x, score_fn)
     assert r["baseline_score"] == pytest.approx(8.0)
     by_index = {row["index"]: row for row in r["ranking"]}
-    # removing the constant block costs 5, the doubler costs 2, the zero block costs 0
     assert by_index[2]["damage"] == pytest.approx(5.0)
     assert by_index[0]["damage"] == pytest.approx(2.0)
     assert by_index[1]["damage"] == pytest.approx(0.0)
@@ -52,20 +50,21 @@ def test_fragile_blocks():
     r = knockout_rank(blocks, x, score_fn)
     assert fragile_blocks(r, fraction=0.5) == [2]
     assert fragile_blocks(r, fraction=0.1) == [2, 0]
-    assert fragile_blocks(r, fraction=0.0) == [2, 0]
+    assert fragile_blocks(r, fraction=0.0) == [2, 0, 1]
 
 
 def test_negative_damage_means_parasite():
     blocks = [
         lambda y: CONST,
-        lambda y: -np.ones(D),  # removing this block helps
+        lambda y: -np.ones(D),
     ]
     x = np.zeros(D)
     r = knockout_rank(blocks, x, score_fn)
+    assert r["baseline_score"] == pytest.approx(4.0)
     by_index = {row["index"]: row for row in r["ranking"]}
-    assert by_index[1]["damage"] == pytest.approx(4.0)
-    # removing the constant block is worse than removing the parasite
-    assert [row["index"] for row in r["ranking"]] == [1, 0]
+    assert by_index[0]["damage"] == pytest.approx(5.0)
+    assert by_index[1]["damage"] == pytest.approx(-1.0)
+    assert [row["index"] for row in r["ranking"]] == [0, 1]
 
 
 def test_empty_blocks_error():
