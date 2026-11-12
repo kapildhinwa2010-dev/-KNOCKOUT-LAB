@@ -1,5 +1,7 @@
 # KNOCKOUT-LAB
 
+[![Stars](https://img.shields.io/github/stars/kapildhinwa2010-dev/-KNOCKOUT-LAB?style=flat-square)](https://github.com/kapildhinwa2010-dev/-KNOCKOUT-LAB/stargazers) [![Forks](https://img.shields.io/github/forks/kapildhinwa2010-dev/-KNOCKOUT-LAB?style=flat-square)](https://github.com/kapildhinwa2010-dev/-KNOCKOUT-LAB/network/members) [![Issues](https://img.shields.io/github/issues/kapildhinwa2010-dev/-KNOCKOUT-LAB?style=flat-square)](https://github.com/kapildhinwa2010-dev/-KNOCKOUT-LAB/issues) [![Top language](https://img.shields.io/github/languages/top/kapildhinwa2010-dev/-KNOCKOUT-LAB?style=flat-square)](https://github.com/kapildhinwa2010-dev/-KNOCKOUT-LAB)
+
 Remove one block at a time and rank every component by the damage it prevents.
 
 KNOCKOUT-LAB is an ablation lab for stream-additive models. It scores the intact run, removes each block in turn, and ranks blocks by score damage. A block whose removal costs nothing is dead weight; a block whose removal helps is a parasite.
